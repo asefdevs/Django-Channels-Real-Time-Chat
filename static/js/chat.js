@@ -11,6 +11,7 @@ chatSocket.onmessage = function(e){
                 <div class="col-sm-12 message-main-sender">
                 <div class="sender">
                     <div class="message-text">
+                    
                     ${data['message']}
                     </div>
                     <span class="message-time pull-right">
@@ -20,6 +21,7 @@ chatSocket.onmessage = function(e){
                 </div>
             </div> 
         `
+    
     conversation.innerHTML += message
 }
 
