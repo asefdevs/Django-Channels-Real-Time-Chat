@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
-from .models import Room
+from .models import Room, Message
 
 def index(request):
     users = User.objects.all().exclude(id=request.user.id)
@@ -12,11 +12,18 @@ def index(request):
 
 def room(request, room_name):
     users = User.objects.all().exclude(id=request.user.id)
+    messages = Message.objects.filter(room_id=room_name)
     try:
         room = Room.objects.get(id=room_name)
     except:
         return HttpResponse("Room not found")
-    return render(request, "chat/room_v2.html", {"room_name": room_name, "users": users, "room": room})
+    context = {
+        "room_name": room_name,
+        "users": users,
+        "messages": messages,
+        "room": room
+    }
+    return render(request, "chat/room_v2.html", context)
 
 
 def start_chat(request, username):

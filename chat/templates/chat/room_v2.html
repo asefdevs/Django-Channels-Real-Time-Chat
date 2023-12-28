@@ -20,7 +20,7 @@
         <div class="row heading">
           <div class="col-sm-3 col-xs-3 heading-avatar">
             <div class="heading-avatar-icon">
-              <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+              <img src="">
               <span class="name-meta">{{request.user|title}}</span>
 
             </div>
@@ -47,7 +47,7 @@
           <div class="row sideBar-body">
             <div class="col-sm-3 col-xs-3 sideBar-avatar">
               <div class="avatar-icon">
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                <img src="">
               </div>
             </div>
             <div class="col-sm-9 col-xs-9 sideBar-main">
@@ -289,7 +289,7 @@
       <div class="row heading">
         <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
           <div class="heading-avatar-icon">
-            <img src="https://bootdey.com/img/Content/avatar/avatar6.png">
+            <img src="">
           </div>
         </div>
         <div class="col-sm-8 col-xs-7 heading-name">
@@ -308,6 +308,39 @@
       </div>
 
       <div class="row message" id="conversation">
+        {% for message in messages %}
+        {% if message.user == request.user %}
+        <div class="row message-body">
+                <div class="col-sm-12 message-main-sender">
+                <div class="sender">
+                    <div class="message-text">
+                    
+                    {{message.content}}
+
+                    </div>
+                    <span class="message-time pull-right">
+                    {{message.created_at|date:"H:i"}}
+                    </span>
+                </div>
+                </div>
+            </div> 
+        {% else %}
+        <div class="row message-body">
+                <div class="col-sm-12 message-main-receiver">
+                <div class="receiver">
+                    <div class="message-text">
+                    
+                    {{message.content}}
+
+                    </div>
+                    <span class="message-time pull-right">
+                    {{message.created_at|date:"H:i"}}
+                    </span>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+        {% endfor %}
       </div>
 
       <div class="row reply">
