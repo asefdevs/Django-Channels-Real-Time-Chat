@@ -12,7 +12,10 @@ def index(request):
 
 def room(request, room_name):
     users = User.objects.all().exclude(id=request.user.id)
-    room = Room.objects.get(id=room_name)
+    try:
+        room = Room.objects.get(id=room_name)
+    except:
+        return HttpResponse("Room not found")
     return render(request, "chat/room_v2.html", {"room_name": room_name, "users": users, "room": room})
 
 
@@ -21,7 +24,10 @@ def start_chat(request, username):
     try:
         room = Room.objects.get(first_user=request.user, second_user=second_user)
     except:
-        room = Room.objects.create(first_user=request.user, second_user=second_user)
+        try :
+            room = Room.objects.get(first_user=second_user, second_user=request.user)
+        except:
+            room = Room.objects.create(first_user=request.user, second_user=second_user)
     return redirect('room', room_name=room.id)
 
 def login_view(request):

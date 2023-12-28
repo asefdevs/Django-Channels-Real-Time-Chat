@@ -12,6 +12,11 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if self.first_user and self.second_user:
+            self.name = f"{self.first_user.username} - {self.second_user.username}"
+        super().save(*args, **kwargs)
 
 class Message(models.Model):
     room = models.ForeignKey(Room, related_name= 'messages' , on_delete=models.CASCADE)

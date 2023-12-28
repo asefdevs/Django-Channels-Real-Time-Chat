@@ -11,7 +11,6 @@
     <link href="{% static 'css/chat.css' %}" rel="stylesheet">
 </head>
 <body>
-{{ room_name|json_script:"room-name" }}
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="container app">
@@ -22,6 +21,8 @@
           <div class="col-sm-3 col-xs-3 heading-avatar">
             <div class="heading-avatar-icon">
               <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+              <span class="name-meta">{{request.user|title}}</span>
+
             </div>
           </div>
           <div class="col-sm-1 col-xs-1  heading-dot  pull-right">
@@ -307,32 +308,6 @@
       </div>
 
       <div class="row message" id="conversation">
-
-        <!-- <div class="row message-body">
-          <div class="col-sm-12 message-main-receiver">
-            <div class="receiver">
-              <div class="message-text">
-               Hi, what are you doing?!
-              </div>
-              <span class="message-time pull-right">
-                Sun
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="row message-body">
-          <div class="col-sm-12 message-main-sender">
-            <div class="sender">
-              <div class="message-text">
-                I am doing nothing man!
-              </div>
-              <span class="message-time pull-right">
-                Sun
-              </span>
-            </div>
-          </div>
-        </div> -->
       </div>
 
       <div class="row reply">
@@ -352,6 +327,8 @@
     </div>
   </div>
 </div>
+{{ room_name|json_script:"room-name" }}
+{{ request.user.username|json_script:'user'}}
 
 
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
