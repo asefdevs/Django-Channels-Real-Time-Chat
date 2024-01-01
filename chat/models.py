@@ -1,13 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
+from auth_chat.models import CustomUser
 import uuid
 
 
 class Room(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
-    first_user = models.ForeignKey(User, related_name= 'first_user' , on_delete=models.CASCADE, null=True, blank=True)
-    second_user = models.ForeignKey(User, related_name= 'second_user' , on_delete=models.CASCADE, null=True, blank=True)
+    first_user = models.ForeignKey(CustomUser, related_name= 'first_user' , on_delete=models.CASCADE, null=True, blank=True)
+    second_user = models.ForeignKey(CustomUser, related_name= 'second_user' , on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -20,7 +20,7 @@ class Room(models.Model):
 
 class Message(models.Model):
     room = models.ForeignKey(Room, related_name= 'messages' , on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name= 'messages' , on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, related_name= 'messages' , on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
 

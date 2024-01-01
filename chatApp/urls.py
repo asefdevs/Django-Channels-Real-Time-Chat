@@ -19,10 +19,12 @@ from django.urls import path
 from chat.urls import urlpatterns as chat_urls
 from django.urls import include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from auth_chat.urls import urlpatterns as auth_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include(chat_urls)),
+    path('auth/', include(auth_urls)),
 ]
 
 
