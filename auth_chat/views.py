@@ -6,12 +6,28 @@ from auth_chat.serializers import (
     UserCreateSerializer,
     GenerateOTPSerializer,
     VerifyOTPSerializer,
+    AllUsersSerializer
 )
 from rest_framework import generics
 from rest_framework.views import APIView
+from rest_framework import permissions
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .utils.otp_generator import generate_otp, generate_secret_key, verify_otp
+
+from rest_framework_simplejwt.tokens import AccessToken
+
+class AllUsers(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = AllUsersSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        acces_token = AccessToken.for_user(user)
+        
+        print(acces_token)
+        return super().get_queryset().exclude(id=self.request.user.id)
 
 class UserRegisterAPIView(APIView):
     permission_classes = [AllowAny]

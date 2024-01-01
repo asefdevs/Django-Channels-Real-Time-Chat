@@ -68,3 +68,8 @@ class VerifyOTPSerializer(serializers.Serializer):
         if not verify_otp(secret_key,otp):
             raise serializers.ValidationError({'otp': 'OTP is incorrect.'})
         return data
+    
+class AllUsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username']

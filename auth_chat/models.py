@@ -6,7 +6,6 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=20, blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
     is_active = models.BooleanField(default=False)
-    otp = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.username    
@@ -15,10 +14,10 @@ class CustomUser(AbstractUser):
 
 class Contacts(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    contact = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='contactsdsdsdsdsds')
+    contacts = models.ManyToManyField(CustomUser, related_name='user_contacts')
     
     def __str__(self):
-        return self.user.username + ' - ' + self.contact.username
+        return self.user.username 
     
     
 class ProfilePhoto(models.Model):

@@ -3,6 +3,7 @@ from auth_chat.views import (
     UserRegisterAPIView,
     GenerateOTPAPIView,
     VerifyOTPAPIView,
+    AllUsers,
 )
 
 from rest_framework_simplejwt.views import (
@@ -18,5 +19,7 @@ urlpatterns = [
     path('register/',UserRegisterAPIView.as_view(), name='register'),
     path('generate-otp/', GenerateOTPAPIView.as_view(), name='generate-otp'),
     path('verify-otp/', VerifyOTPAPIView.as_view(), name='verify-otp'),
+
+    path('all-users/', AllUsers.as_view(), name='all-users'),
     
 ]
