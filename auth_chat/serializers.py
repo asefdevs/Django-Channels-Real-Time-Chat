@@ -1,11 +1,11 @@
 from auth_chat.models import CustomUser
 from rest_framework import serializers
-
+from auth_chat.utils.otp_generator import generate_otp, generate_secret_key, verify_otp
 class UserCreateSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     class Meta:
         model = CustomUser
-        fields = ['id', 'username','email', 'password', 'password2', 'phone', 'address']
+        fields = ['id', 'username', 'email', 'password', 'password2', 'phone', 'address']
 
 
     def validate(self,data):
@@ -38,3 +38,33 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+    
+class GenerateOTPSerializer(serializers.Serializer):
+    phone = serializers.CharField(max_length=20)
+
+    def validate(self, data):
+        phone = data['phone']
+        user = CustomUser.objects.filter(phone=phone).first()
+        if not user:
+            raise serializers.ValidationError({'phone': 'User does not exist.'})
+        if user.is_active:
+            raise serializers.ValidationError({'phone': 'User is already active.'})
+        return data
+    
+class VerifyOTPSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(max_length=100)
+    otp = serializers.CharField(max_length=100)
+    secret_key = serializers.CharField(max_length=100)
+
+    def validate(self, data):
+        phone_number = data['phone_number']
+        otp = data['otp']
+        secret_key = data['secret_key']
+        user = CustomUser.objects.filter(phone=phone_number).first()
+        if not user:
+            raise serializers.ValidationError({'phone_number': 'User does not exist.'})
+        if user.is_active:
+            raise serializers.ValidationError({'phone_number': 'User is already active.'})
+        if not verify_otp(secret_key,otp):
+            raise serializers.ValidationError({'otp': 'OTP is incorrect.'})
+        return data

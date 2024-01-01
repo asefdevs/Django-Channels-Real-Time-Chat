@@ -1,5 +1,9 @@
 from django.urls import path
-from . import views
+from auth_chat.views import (
+    UserRegisterAPIView,
+    GenerateOTPAPIView,
+    VerifyOTPAPIView,
+)
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -11,5 +15,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
 
-    path('register/', views.UserRegisterAPIView.as_view(), name='register'),
+    path('register/',UserRegisterAPIView.as_view(), name='register'),
+    path('generate-otp/', GenerateOTPAPIView.as_view(), name='generate-otp'),
+    path('verify-otp/', VerifyOTPAPIView.as_view(), name='verify-otp'),
+    
 ]

@@ -1,10 +1,17 @@
 from rest_framework.response import Response
-from auth_chat.serializers import UserCreateSerializer
+
+from auth_chat.models import CustomUser
+
+from auth_chat.serializers import (
+    UserCreateSerializer,
+    GenerateOTPSerializer,
+    VerifyOTPSerializer,
+)
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework import status
-
+from .utils.otp_generator import generate_otp, generate_secret_key, verify_otp
 
 class UserRegisterAPIView(APIView):
     permission_classes = [AllowAny]
@@ -18,3 +25,33 @@ class UserRegisterAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GenerateOTPAPIView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = GenerateOTPSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            secret_key = generate_secret_key()
+            otp = generate_otp(secret_key)
+            response_data = {
+                'secret_key': secret_key,
+                'otp': otp,
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+           
+    
+class VerifyOTPAPIView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = VerifyOTPSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            phone_number = serializer.data['phone_number']
+            user = CustomUser.objects.filter(phone=phone_number).first()
+            user.is_active = True
+            user.save()
+            return Response({'message': 'Verified Succesfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
