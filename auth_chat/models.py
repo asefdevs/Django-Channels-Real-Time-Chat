@@ -14,10 +14,10 @@ class CustomUser(AbstractUser):
 
 class Contacts(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    contacts = models.ManyToManyField(CustomUser, related_name='user_contacts')
+    contacts = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_contacts',blank=True, null=True)
     
     def __str__(self):
-        return self.user.username 
+        return f'{self.user.username} - {self.contacts.username}'
     
     
 class ProfilePhoto(models.Model):

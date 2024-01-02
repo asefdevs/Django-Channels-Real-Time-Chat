@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 from chat.views import (
     AddContactAPIView,
+    MyContactsAPIView,
 )
 
 urlpatterns = [
@@ -12,6 +13,7 @@ urlpatterns = [
     path('room/<str:username>/', views.start_chat, name='start_chat'),
 
     path('api/add-contact/', AddContactAPIView.as_view(), name='add-contact'),
+    path('api/my-contacts/', MyContactsAPIView.as_view(), name='my-contacts'),
 
 
 

@@ -16,6 +16,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework import generics
 from chat.serializers import (
     AddContactSerializer,
+    MyContactsSerializer,
 )
 
 class AddContactAPIView(generics.CreateAPIView):
@@ -24,12 +25,15 @@ class AddContactAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        user = self.request.user
-        existing_contact = Contacts.objects.filter(user=user).first()
-        if existing_contact:
-            existing_contact.contacts.add(*serializer.validated_data.get('contacts'))
-            existing_contact.save()
         serializer.save(user=self.request.user)
+
+class MyContactsAPIView(generics.ListAPIView):
+    queryset = Contacts.objects.all()
+    serializer_class = MyContactsSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Contacts.objects.filter(user=self.request.user)
 
 
 def index(request):

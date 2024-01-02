@@ -54,8 +54,6 @@ class ChatConsumer(WebsocketConsumer):
         message = event["message"]
         user = event["user"]
         created_at = event['created_at']
-        print(user)
-
         self.send(text_data=json.dumps(
             {
                 "message": message,
@@ -63,12 +61,3 @@ class ChatConsumer(WebsocketConsumer):
                 'created_at': created_at
             }
             ))
-        
-    def verify_token (self, token):
-        access_token_obj = AccessToken(token)
-        user_id=access_token_obj['user_id']
-        try:
-            user=CustomUser.objects.get(id=user_id)
-        except CustomUser.DoesNotExist:
-            return False
-        return True

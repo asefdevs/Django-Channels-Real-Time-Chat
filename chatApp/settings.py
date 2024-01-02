@@ -72,6 +72,11 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API for the Django Channels Chat App',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+    },
+    'COMPONENT_SPLIT_REQUEST': True,
     # OTHER SETTINGS
 }
 
