@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 
 from auth_chat.models import CustomUser
+from auth_chat.permissions import IsAdmin
 
 from auth_chat.serializers import (
     UserCreateSerializer,
@@ -20,7 +21,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 class AllUsers(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = AllUsersSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdmin]
 
     def get_queryset(self):
         user = self.request.user
