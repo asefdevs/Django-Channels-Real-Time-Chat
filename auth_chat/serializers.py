@@ -1,6 +1,7 @@
 from auth_chat.models import CustomUser
 from rest_framework import serializers
 from auth_chat.utils.otp_generator import generate_otp, generate_secret_key, verify_otp
+
 class UserCreateSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     class Meta:
@@ -38,6 +39,34 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+    
+class UserProfileRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'phone', 'address']
+
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'phone', 'address']
+
+        def validate(self, data):
+            existing_email = CustomUser.objects.filter(email=data['email']).first()
+            if existing_email:
+                raise serializers.ValidationError({'email': 'Email already exists.'})
+            
+            existing_username = CustomUser.objects.filter(username=data['username']).first()
+            if existing_username:
+                raise serializers.ValidationError({'username': 'Username already exists.'})
+            
+            existing_number = CustomUser.objects.filter(phone=data['phone']).first()
+            if existing_number:
+                raise serializers.ValidationError({'phone': 'Phone number already exists.'})
+            
+            return data
+    
+    
+
     
 class GenerateOTPSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=20)

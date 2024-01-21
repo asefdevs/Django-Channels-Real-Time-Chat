@@ -7,7 +7,9 @@ from auth_chat.serializers import (
     UserCreateSerializer,
     GenerateOTPSerializer,
     VerifyOTPSerializer,
-    AllUsersSerializer
+    AllUsersSerializer,
+    UserProfileRetrieveSerializer,
+    UserProfileUpdateSerializer,
 )
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -40,7 +42,22 @@ class UserRegisterAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserProfileRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserProfileRetrieveSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get_object(self):
+        return self.request.user
+    
+class UserProfileUpdateAPIView(generics.UpdateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserProfileUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 class GenerateOTPAPIView(APIView):
     permission_classes = [AllowAny]
