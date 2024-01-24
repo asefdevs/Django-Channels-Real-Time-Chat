@@ -10,6 +10,7 @@ from auth_chat.serializers import (
     AllUsersSerializer,
     UserProfileRetrieveSerializer,
     UserProfileUpdateSerializer,
+    UploadProfilePhotoSerializer,
 )
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -58,6 +59,17 @@ class UserProfileUpdateAPIView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+class UploadProfilePhotoAPIView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UploadProfilePhotoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class GenerateOTPAPIView(APIView):
     permission_classes = [AllowAny]

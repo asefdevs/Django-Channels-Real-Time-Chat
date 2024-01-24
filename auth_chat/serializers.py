@@ -1,6 +1,6 @@
-from auth_chat.models import CustomUser
+from auth_chat.models import CustomUser, ProfilePhoto
 from rest_framework import serializers
-from auth_chat.utils.otp_generator import generate_otp, generate_secret_key, verify_otp
+from auth_chat.utils.otp_generator import  verify_otp
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
@@ -102,3 +102,9 @@ class AllUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username']
+
+
+class UploadProfilePhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfilePhoto
+        fields = ['photo']
