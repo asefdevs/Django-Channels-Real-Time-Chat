@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from .models import Room, Message
 from django.db.models import Q
+import uuid
 
 from auth_chat.models import (
     CustomUser,
@@ -73,9 +74,15 @@ class ChatRoomRetrieveView(generics.RetrieveAPIView):
 
     def get(self, request, room_id):
         try:
+            uuid.UUID(room_id)
+        except ValueError:
+            return Response({'message': 'Invalid UUID format for room_id.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
             room = Room.objects.get(pk=room_id)
         except Room.DoesNotExist:
             return Response({'message': 'Room not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
         serializer = self.get_serializer(room)
         return Response(serializer.data)
 
