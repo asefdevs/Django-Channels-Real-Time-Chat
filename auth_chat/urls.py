@@ -6,6 +6,7 @@ from auth_chat.views import (
     AllUsers,
     UserProfileRetrieveAPIView,
     UserProfileUpdateAPIView,
+    UploadProfilePhotoAPIView,
 )
 
 from rest_framework_simplejwt.views import (
@@ -24,6 +25,7 @@ urlpatterns = [
 
     path('profile/', UserProfileRetrieveAPIView.as_view(), name='profile'),
     path('profile/update/', UserProfileUpdateAPIView.as_view(), name='profile-update'),
+    path('profile/photo/', UploadProfilePhotoAPIView.as_view(), name='profile-photo'),
 
     path('all-users/', AllUsers.as_view(), name='all-users'),
     

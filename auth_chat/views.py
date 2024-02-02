@@ -2,6 +2,7 @@ from rest_framework.response import Response
 
 from auth_chat.models import CustomUser
 from auth_chat.permissions import IsAdmin
+from rest_framework.parsers import MultiPartParser
 
 from auth_chat.serializers import (
     UserCreateSerializer,
@@ -63,6 +64,7 @@ class UserProfileUpdateAPIView(generics.UpdateAPIView):
 class UploadProfilePhotoAPIView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UploadProfilePhotoSerializer
+    parser_classes = [MultiPartParser]
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
