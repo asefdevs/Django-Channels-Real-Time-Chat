@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Create migrations"
 python manage.py makemigrations 
 echo "=================================="

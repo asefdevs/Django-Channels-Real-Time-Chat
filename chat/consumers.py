@@ -22,6 +22,10 @@ class ChatConsumer(WebsocketConsumer):
             self.disconnect(404)
             return
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        is_user_in_room = Room.objects.filter(id=self.room_name, first_user=self.user).exists() or Room.objects.filter(id=self.room_name, second_user=self.user).exists()
+        if not is_user_in_room:
+            self.disconnect(404)
+            return
         self.room_group_name = f"chat_{self.room_name}"
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name, self.channel_name
