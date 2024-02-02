@@ -58,9 +58,10 @@ ws://127.0.0.1:8000/ws/chat/chat_uuid/token/
 
 ```
 Example Photo :
+### NOTE : Message data should be json like {"message" :"text"} this.
 ![Screenshot from 2024-02-02 16-40-00](https://github.com/asefdevs/Python-Chat-App/assets/135063247/e67821fd-7af6-47a5-b975-316568540a7b)
-
-## NOTE : Message data should be json like {message:"text"} this
+###  Also for local you should put this configurations for headers.
+![image](https://github.com/asefdevs/Python-Chat-App/assets/135063247/34fc6f1d-7496-4b13-8166-7c1419085847)
 
 
 
