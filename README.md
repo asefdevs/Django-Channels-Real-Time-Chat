@@ -57,6 +57,10 @@ http://127.0.0.1:8000/api/schema/swagger-ui/#/
 ws://127.0.0.1:8000/ws/chat/chat_uuid/token/
 
 ```
+Example Photo :
+![Screenshot from 2024-02-02 16-40-00](https://github.com/asefdevs/Python-Chat-App/assets/135063247/e67821fd-7af6-47a5-b975-316568540a7b)
+
+## NOTE : Message data should be json like {message:"text"} this
 
 
 
