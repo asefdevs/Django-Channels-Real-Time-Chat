@@ -1,13 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect
-from .models import Room, Message
+from .models import Room
 from django.db.models import Q
 import uuid
 
 from auth_chat.models import (
-    CustomUser,
     Contacts,
 ) 
 from rest_framework import permissions
